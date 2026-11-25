@@ -1,0 +1,62 @@
+### 1. List products (200, 5 products)
+GET http://localhost:8080/api/products
+
+### 2. Search by name (200, 1 product)
+GET http://localhost:8080/api/products?q=laptop
+
+### 3. Create a product (201 Created)
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "Teclado mecánico",
+  "description": "Switches rojos",
+  "price": 49.90,
+  "stock": 15,
+  "category": "electronica"
+}
+
+### 4. Create an order (201 Created, total 1349.79)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "items": [
+    { "productId": 1, "quantity": 1 },
+    { "productId": 2, "quantity": 2 }
+  ]
+}
+
+### 5. Read the order back (200)
+GET http://localhost:8080/api/orders/1
+
+### 6. Not enough stock (409, nothing is taken from the stock)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "items": [
+    { "productId": 2, "quantity": 1 },
+    { "productId": 3, "quantity": 99 }
+  ]
+}
+
+### 7. Unknown product in an order (404)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{
+  "items": [ { "productId": 999, "quantity": 1 } ]
+}
+
+### 8. Invalid order (400)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{ "items": [] }
+
+### 9. Delete a product that has orders (409)
+DELETE http://localhost:8080/api/products/1
+
+### 10. Delete a product without orders (204; repeat it and you get 404)
+DELETE http://localhost:8080/api/products/5
